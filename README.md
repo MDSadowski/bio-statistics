@@ -9,8 +9,10 @@ for environmental-health research.
 ## Why this exists
 
 Research work starts with very small, checkable calculations:
-sample size, range, mean, and spread. This program practises those
-operations in a time-saving form that can be used at a desk or on a calculator.
+sample size, range, mean, and spread.
+
+This program practises those operations in a time-saving
+form that can be used at a desk or on a calculator.
 
 ## Features
 
