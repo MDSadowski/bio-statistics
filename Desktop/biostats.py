@@ -1,16 +1,35 @@
+# Biostats
+# Small descriptive-statistics tool for biological measurements.
+# Desktop Python version.
+#
+# Controls:
+#   Enter on a blank line = calculate
+#   C = calculate
+#   B = previous value
+#   F = next value
+#   G = next group in two-sample mode
+#   Q = return to menu
+#
+# Sample standard deviation is used (divide by n-1).
+# At least 2 values are required before a result is shown.
+
 def mean(values):
+    """Arithmetic mean of a list of numbers."""
     return sum(values) / len(values)
 
 def variance(values):
+    """Sample variance (n-1)."""
     m = mean(values)
     return sum((x - m) ** 2 for x in values) / (len(values) - 1)
 
 def std_dev(values):
+    """Sample standard deviation (n-1)."""
     return variance(values) ** 0.5
 
-def summarise(values, label):
+def show(values, label):
+    """Print a compact numeric summary."""
     print("")
-    print("Summary:", label)
+    print(label)
     print("n    =", len(values))
     print("min  =", min(values))
     print("max  =", max(values))
@@ -19,27 +38,30 @@ def summarise(values, label):
     print("sd   =", std_dev(values))
 
 def pause():
-    input("Press Enter to continue...")
+    """Keep results on screen until Enter is pressed."""
+    input("Continue: [Enter]")
 
-def collect_values(data=None):
+def collect(data):
+    """Collect numbers one at a time.
+
+    Empty input calculates. B goes back, F goes forward,
+    G ends the current group, Q returns to the menu.
+    """
     if data is None:
         data = []
     pos = len(data)
 
     while True:
-        prompt = "Input value " + str(pos + 1)
+        msg = "Input value " + str(pos + 1)
         if pos < len(data):
-            prompt = prompt + " [" + str(data[pos]) + "]"
-        raw = input(prompt + ": ").strip()
-
-        if raw == "":
-            return data
-
+            msg = msg + " [" + str(data[pos]) + "]"
+        raw = input(msg + ": ").strip()
         cmd = raw.upper()
+
+        if raw == "" or cmd == "C":
+            return data
         if cmd == "Q":
             return None
-        if cmd == "C":
-            return data
         if cmd == "G":
             return data
         if cmd == "B":
@@ -63,77 +85,76 @@ def collect_values(data=None):
             data.append(value)
         pos = len(data)
 
-def one_sample():
+def one():
     print("")
-    print("ONE SAMPLE")
-    data = collect_values()
+    print("-ONE SAMPLE MODE-")
+    data = collect([])
     if data is None:
         return
     if len(data) < 2:
-        print("Need at least 2 values.")
+        print("Need 2+ values")
         pause()
         return
-    summarise(data, "one sample")
+    show(data, "sample")
     pause()
 
-def two_sample():
+def two():
     print("")
-    print("TWO SAMPLE")
-    group_a = collect_values()
+    print("-TWO SAMPLE MODE-")
+    group_a = collect([])
     if group_a is None:
         return
     if len(group_a) < 2:
-        print("Group A needs at least 2 values.")
+        print("Need 2+ in A")
         pause()
         return
 
-    group_b = collect_values()
+    group_b = collect([])
     if group_b is None:
         return
     if len(group_b) < 2:
-        print("Group B needs at least 2 values.")
+        print("Need 2+ in B")
         pause()
         return
 
-    summarise(group_a, "group A")
-    summarise(group_b, "group B")
-    print("")
-    print("mean A - mean B =", mean(group_a) - mean(group_b))
+    show(group_a, "A")
+    show(group_b, "B")
+    print("A-B =", mean(group_a) - mean(group_b))
     pause()
 
-def show_help():
+def help_menu():
     print("")
-    print("One-sample and two-sample controls")
-    print("Enter = calculate")
-    print("C     = calculate")
-    print("B     = back one value")
-    print("F     = forward one value")
-    print("G     = next group in two-sample mode")
-    print("Q     = return to menu")
+    print("-HELP MENU-")
+    print("Enter calculate")
+    print("C calculate")
+    print("B go back")
+    print("F forward")
+    print("G next group")
+    print("Q return to menu")
     pause()
 
 def menu():
     while True:
         print("")
-        print("Welcome to Biostats")
+        print("-WELCOME TO BIOSTATS-")
         print("Select mode:")
-        print("1  One-sample stats")
-        print("2  Two-sample comparison")
-        print("3  Help")
-        print("4  Exit")
+        print("[1] One sample")
+        print("[2] Two sample")
+        print("[3] Help")
+        print("[4] Exit")
         choice = input("Mode: ").strip()
 
         if choice == "1":
-            one_sample()
+            one()
         elif choice == "2":
-            two_sample()
+            two()
         elif choice == "3":
-            show_help()
-        elif choice == "4":
-            print("Goodbye.")
+            help_menu()
+        elif choice == "4" or choice.upper() == "Q":
+            print("Goodbye!")
             break
         else:
-            print("Choose 1, 2, 3 or 4.")
+            print("1-4")
 
 if __name__ == "__main__":
     menu()

@@ -1,7 +1,24 @@
+# Biostats
+# Small descriptive-statistics tool for biological measurements.
+# Casio fx-CG50 MicroPython version.
+#
+# Casio controls (no ALPHA key needed):
+#   EXE on a blank line = calculate
+#   - = previous value
+#   + = next value
+#   * = next group in two-sample mode
+#   / = return to menu
+#
+# Sample standard deviation is used (divide by n-1).
+# At least 2 values are required before a result is shown.
+# Use the filename biostats.py (no hyphen) on the calculator.
+
 def mean(values):
+    """Arithmetic mean of a list of numbers."""
     return sum(values) / len(values)
 
 def sd(values):
+    """Sample standard deviation (n-1)."""
     m = mean(values)
     v = 0
     for x in values:
@@ -10,6 +27,7 @@ def sd(values):
     return v ** 0.5
 
 def show(values, label):
+    """Print a compact summary for the calculator screen."""
     print("")
     print(label)
     print("n =", len(values))
@@ -19,9 +37,15 @@ def show(values, label):
     print("sd =", sd(values))
 
 def pause():
+    """Keep results on screen until EXE is pressed."""
     input("Continue: [EXE]")
 
 def collect(data):
+    """Collect numbers one at a time.
+
+    Empty input calculates. '-' goes back, '+' goes forward,
+    '*' ends the current group, '/' returns to the menu.
+    """
     if data is None:
         data = []
     pos = len(data)

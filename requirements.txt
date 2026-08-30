@@ -1,4 +1,10 @@
-# No third-party packages required for the first scripts.
-# Add packages here later, for example:
-# pandas
-# matplotlib
+# Biostats currently uses the Python standard library only.
+# No third-party packages are required for the Casio or desktop scripts.
+#
+# Minimum:
+#   Desktop: Python 3.8+
+#   Casio fx-CG50: built-in MicroPython
+#
+# Add packages here when the desktop version grows, for example:
+# pandas>=2.0
+# matplotlib>=3.8
