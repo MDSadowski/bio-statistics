@@ -1,0 +1,278 @@
+# Biostats Plus
+# Clinical extras for small biological datasets.
+# Desktop Python version.
+# Keep printed lines to 21 characters.
+
+def mean(values):
+    return sum(values) / len(values)
+
+def variance(values):
+    m = mean(values)
+    return sum((x - m) ** 2 for x in values) / (len(values) - 1)
+
+def sd(values):
+    return variance(values) ** 0.5
+
+def median(values):
+    s = sorted(values)
+    n = len(s)
+    mid = n // 2
+    if n % 2 == 1:
+        return s[mid]
+    return 0.5 * (s[mid - 1] + s[mid])
+
+def iqr(values):
+    s = sorted(values)
+    n = len(s)
+    if n % 2 == 0:
+        q1 = median(s[:n // 2])
+        q3 = median(s[n // 2:])
+    else:
+        q1 = median(s[:n // 2])
+        q3 = median(s[n // 2 + 1:])
+    return q3 - q1
+
+def r4(x):
+    return round(x, 4)
+
+def pause():
+    input("Continue: [Enter]")
+
+def collect(data, label):
+    if data is None:
+        data = []
+    pos = len(data)
+    while True:
+        msg = label + " " + str(pos + 1)
+        if pos < len(data):
+            msg = msg + "[" + str(data[pos]) + "]"
+        raw = input(msg + ": ").strip()
+        cmd = raw.upper()
+        if raw == "" or cmd == "C":
+            return data
+        if cmd == "Q":
+            return None
+        if cmd == "G":
+            return data
+        if cmd == "B":
+            if pos > 0:
+                pos = pos - 1
+            continue
+        if cmd == "F":
+            if pos < len(data):
+                pos = pos + 1
+            continue
+        try:
+            value = float(raw.replace(",", "."))
+        except ValueError:
+            continue
+        if pos < len(data):
+            data[pos] = value
+            data = data[:pos + 1]
+        else:
+            data.append(value)
+        pos = len(data)
+
+def show_desc(values, title):
+    print(title)
+    print("n =", len(values))
+    print("min =", r4(min(values)))
+    print("max =", r4(max(values)))
+    print("mean =", r4(mean(values)))
+    print("sd =", r4(sd(values)))
+    print("med =", r4(median(values)))
+    print("IQR =", r4(iqr(values)))
+
+def ask_num(prompt):
+    while True:
+        raw = input(prompt).strip()
+        if raw == "/" or raw.upper() == "Q":
+            return None
+        try:
+            return float(raw.replace(",", "."))
+        except ValueError:
+            continue
+
+def descriptive():
+    print("")
+    print("-DESCRIPTIVE-")
+    data = collect([], "Input value")
+    if data is None:
+        return
+    if len(data) < 2:
+        print("Need 2+ values")
+        pause()
+        return
+    show_desc(data, "sample")
+    pause()
+
+def group_compare():
+    print("")
+    print("-GROUP COMPARE-")
+    a = collect([], "A value")
+    if a is None:
+        return
+    if len(a) < 2:
+        print("Need 2+ in A")
+        pause()
+        return
+    b = collect([], "B value")
+    if b is None:
+        return
+    if len(b) < 2:
+        print("Need 2+ in B")
+        pause()
+        return
+    show_desc(a, "A")
+    show_desc(b, "B")
+    diff = mean(a) - mean(b)
+    n1 = len(a)
+    n2 = len(b)
+    sp2 = ((n1 - 1) * variance(a) + (n2 - 1) * variance(b)) / (n1 + n2 - 2)
+    se = (sp2 * (1.0 / n1 + 1.0 / n2)) ** 0.5
+    t = diff / se
+    d = diff / (sp2 ** 0.5)
+    print("A-B =", r4(diff))
+    print("t =", r4(t))
+    print("df =", n1 + n2 - 2)
+    print("d =", r4(d))
+    pause()
+
+def paired_diff():
+    print("")
+    print("-PAIRED DIFF-")
+    data = collect([], "Input diff")
+    if data is None:
+        return
+    if len(data) < 2:
+        print("Need 2+ diffs")
+        pause()
+        return
+    show_desc(data, "diffs")
+    se = sd(data) / (len(data) ** 0.5)
+    t = mean(data) / se
+    print("t =", r4(t))
+    print("df =", len(data) - 1)
+    pause()
+
+def proportion():
+    print("")
+    print("-PROPORTION-")
+    k = ask_num("Successes: ")
+    if k is None:
+        return
+    n = ask_num("Trials: ")
+    if n is None:
+        return
+    if n <= 0 or k < 0 or k > n:
+        print("Need 0<=k<=n")
+        pause()
+        return
+    p = k / n
+    se = (p * (1.0 - p) / n) ** 0.5
+    lo = p - 1.96 * se
+    hi = p + 1.96 * se
+    if lo < 0:
+        lo = 0
+    if hi > 1:
+        hi = 1
+    print("p =", r4(p))
+    print("CI lo =", r4(lo))
+    print("CI hi =", r4(hi))
+    pause()
+
+def two_by_two():
+    print("")
+    print("-2x2 TEST-")
+    tp = ask_num("True pos: ")
+    if tp is None:
+        return
+    fp = ask_num("False pos: ")
+    if fp is None:
+        return
+    fn = ask_num("False neg: ")
+    if fn is None:
+        return
+    tn = ask_num("True neg: ")
+    if tn is None:
+        return
+    if min(tp, fp, fn, tn) < 0:
+        print("Need counts >= 0")
+        pause()
+        return
+    sens = tp / (tp + fn) if (tp + fn) > 0 else 0
+    spec = tn / (tn + fp) if (tn + fp) > 0 else 0
+    ppv = tp / (tp + fp) if (tp + fp) > 0 else 0
+    npv = tn / (tn + fn) if (tn + fn) > 0 else 0
+    print("sens =", r4(sens))
+    print("spec =", r4(spec))
+    print("PPV =", r4(ppv))
+    print("NPV =", r4(npv))
+    pause()
+
+def cutoff():
+    print("")
+    print("-CUTOFF CHECK-")
+    data = collect([], "Input value")
+    if data is None:
+        return
+    if len(data) < 1:
+        print("Need 1+ values")
+        pause()
+        return
+    cut = ask_num("Cutoff: ")
+    if cut is None:
+        return
+    above = 0
+    for x in data:
+        if x >= cut:
+            above = above + 1
+    print("n =", len(data))
+    print("cutoff =", r4(cut))
+    print("above =", above)
+    print("%above =", r4(100.0 * above / len(data)))
+    pause()
+
+def help_menu():
+    print("")
+    print("-HELP MENU-")
+    print("Enter calculate")
+    print("C calculate")
+    print("B go back")
+    print("F forward")
+    print("G next group")
+    print("Q return menu")
+    pause()
+
+while True:
+    print("")
+    print("-BIOSTATS PLUS-")
+    print("Select mode:")
+    print("[1] Descriptive")
+    print("[2] Group compare")
+    print("[3] Paired diff")
+    print("[4] Proportion")
+    print("[5] 2x2 test")
+    print("[6] Cutoff")
+    print("[7] Help")
+    print("[8] Exit")
+    choice = input("Mode: ").strip()
+    if choice == "1":
+        descriptive()
+    elif choice == "2":
+        group_compare()
+    elif choice == "3":
+        paired_diff()
+    elif choice == "4":
+        proportion()
+    elif choice == "5":
+        two_by_two()
+    elif choice == "6":
+        cutoff()
+    elif choice == "7":
+        help_menu()
+    elif choice == "8" or choice.upper() == "Q":
+        print("Goodbye!")
+        break
+    else:
+        print("1-8")
