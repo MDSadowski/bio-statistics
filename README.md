@@ -3,9 +3,8 @@
 Small statistical tools for biological datasets, written to run on
 **desktop Python** and a **Casio fx-CG50**.
 
-This repository is part of training in statistics and bioinformatics
-for environmental-health research, including work on endocrine-disrupting
-chemicals and reproductive-health outcomes.
+This repository is introductory training in statistics and bioinformatics
+for environmental-health research.
 
 ## Why this exists
 
