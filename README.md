@@ -7,7 +7,7 @@ The first module computes descriptive statistics for small measurement lists
 and is written so it can run on a desktop and on a Casio fx-CG50.
 
 ## Contents
-- `desktop/biostats.py` — desktop Python
+- `desktop/biostats.py` — Desktop Python 3.14.7
 - `casio/biostats.py` — MicroPython for Casio fx-CG50
 
 ## Run on Windows
