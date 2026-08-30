@@ -3,15 +3,16 @@
 Small statistical tools for biological datasets, written to run on
 **desktop Python** and a **Casio fx-CG50**.
 
-This repository is part of training in statistics and bioinformatics
-for environmental-health research, including work on endocrine-disrupting
-chemicals and reproductive-health outcomes.
+This repository is introductory training in statistics and bioinformatics
+for environmental-health research.
 
 ## Why this exists
 
 Research work starts with very small, checkable calculations:
-sample size, range, mean, and spread. This program practises those
-operations in a form that can be used at a desk or on a calculator.
+sample size, range, mean, and spread.
+
+This program practises those operations in a time-saving
+form that can be used at a desk or on a calculator.
 
 ## Features
 
