@@ -18,27 +18,17 @@ def show(values, label):
     print("mean =", mean(values))
     print("sd =", sd(values))
 
-def wait_bq():
-    while True:
-        raw = input("- back / quit: ")
-        cmd = raw.strip()
-        if cmd == "-" or cmd.upper() == "B":
-            return "B"
-        if cmd == "/" or cmd.upper() == "Q":
-            return "Q"
+def pause():
+    input("Continue: [EXE]")
 
-def collect(title, data):
+def collect(data):
     if data is None:
         data = []
     pos = len(data)
-    print("")
-    print(title)
-    print("EXE calc  - back")
-    print("+ fwd  / menu  * grp")
     while True:
-        msg = "V" + str(pos + 1)
+        msg = "Input value " + str(pos + 1)
         if pos < len(data):
-            msg = msg + "=" + str(data[pos])
+            msg = msg + " [" + str(data[pos]) + "]"
         try:
             raw = input(msg + ": ")
         except KeyboardInterrupt:
@@ -64,7 +54,6 @@ def collect(title, data):
         try:
             value = float(raw)
         except:
-            print("num/EXE/-/+/ /")
             continue
 
         if pos < len(data):
@@ -75,63 +64,62 @@ def collect(title, data):
         pos = len(data)
 
 def one():
-    data = []
-    while True:
-        data = collect("One sample", data)
-        if data is None:
-            return
-        if len(data) < 2:
-            print("Need 2+ values")
-            return
-        show(data, "sample")
-        choice = wait_bq()
-        if choice == "Q":
-            return
+    print("")
+    print("-ONE SAMPLE MODE-")
+    data = collect([])
+    if data is None:
+        return
+    if len(data) < 2:
+        print("Need 2+ values")
+        pause()
+        return
+    show(data, "sample")
+    pause()
 
 def two():
-    a = []
-    b = []
-    while True:
-        print("A then *")
-        a = collect("Group A", a)
-        if a is None:
-            return
-        if len(a) < 2:
-            print("Need 2+ in A")
-            return
-        b = collect("Group B", b)
-        if b is None:
-            return
-        if len(b) < 2:
-            print("Need 2+ in B")
-            return
-        show(a, "A")
-        show(b, "B")
-        print("A-B =", mean(a) - mean(b))
-        choice = wait_bq()
-        if choice == "Q":
-            return
+    print("")
+    print("-TWO SAMPLE MODE-")
+    a = collect([])
+    if a is None:
+        return
+    if len(a) < 2:
+        print("Need 2+ in A")
+        pause()
+        return
+    b = collect([])
+    if b is None:
+        return
+    if len(b) < 2:
+        print("Need 2+ in B")
+        pause()
+        return
+    show(a, "A")
+    show(b, "B")
+    print("A-B =", mean(a) - mean(b))
+    pause()
 
 def help_menu():
-    print("EXE calc")
-    print("- back")
-    print("+ fwd")
-    print("* next grp")
-    print("/ menu")
-    input("/ quit: ")
+    print("")
+    print("-HELP MENU-")
+    print("EXE calculate")
+    print("- go back")
+    print("+ forward")
+    print("* next group")
+    print("/ return to menu")
+    pause()
 
 while True:
     print("")
-    print("Welcome to Biostats")
+    print("-WELCOME TO BIOSTATS-")
     print("Select mode:")
-    print("1 One sample")
-    print("2 Two sample")
-    print("3 Help")
-    print("4 Exit")
+    print("[1] One sample")
+    print("[2] Two sample")
+    print("[3] Help")
+    print("[4] Exit")
     try:
         choice = input("Mode: ")
     except KeyboardInterrupt:
-        print("Bye")
+        print("Goodbye!")
         break
     choice = choice.strip()
     if choice == "1":
@@ -141,7 +129,7 @@ while True:
     elif choice == "3":
         help_menu()
     elif choice == "4" or choice == "/":
-        print("Bye")
+        print("Goodbye!")
         break
     else:
         print("1-4")
