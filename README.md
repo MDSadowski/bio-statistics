@@ -47,7 +47,7 @@ The Casio versions keep every on-screen line to **21 characters**, so results re
 | `biostats_plus.py` | Clinical extras | Descriptive, group compare, paired difference, proportion, 2×2 test, cutoff, help |
 
 `biostats.py` is the finished starter tool.  
-`biostats_plus.py` is the wider clinical set. Keep both.
+`biostats_plus.py` is the wider clinical set.
 
 ---
 
@@ -65,7 +65,9 @@ bio-statistics/
 ├── requirements.txt
 └── LICENSE
 
-Interface
+
+## Interface
+
 Both programs use the same pattern.
 textCopy-BIOSTATS PLUS-
 Select mode:
@@ -137,6 +139,7 @@ IQR uses quartile hinges from the sorted list.
 
 No third-party libraries are used. The Casio builds target stock fx-CG50 MicroPython.
 
+
 ## Limits
 
 A summary is refused when fewer than two values are entered, except cutoff check.
@@ -157,6 +160,7 @@ Convert a 2×2 table into sensitivity, specificity, PPV and NPV
 Count how many measurements exceed a reference cutoff
 
 For file-based analysis with public datasets, plots, and a written methods note, use a separate repository. This repo is the calculator-and-desktop toolkit.
+
 
 ##Author
 
