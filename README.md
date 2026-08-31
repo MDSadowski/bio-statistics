@@ -44,10 +44,10 @@ The Casio versions keep every on-screen line to **21 characters**, so results re
 | File | Role | Modes |
 |---|---|---|
 | `biostats.py` | Version 1. Core summaries | One-sample stats, two-sample mean difference, help |
-| `biostats_plus.py` | Clinical extras | Descriptive, group compare, paired difference, proportion, 2×2 test, cutoff, help |
+| `biostat2.py` | Clinical extras | Descriptive, group compare, paired difference, proportion, 2×2 test, cutoff, help |
 
 `biostats.py` is the finished starter tool.  
-`biostats_plus.py` is the wider clinical set.
+`biostat2.py` is the wider clinical set.
 
 ---
 
@@ -58,7 +58,7 @@ The Casio versions keep every on-screen line to **21 characters**, so results re
 
 No packages to install.
 PowerShellCopypy Desktop\biostats.py
-py Desktop\biostats_plus.py
+py Desktop\biostat2.py
 If python is not recognised, use py.
 
 **Run on Casio fx-CG50**
@@ -67,7 +67,7 @@ Connect the calculator by USB and choose USB Flash.
 Copy the Casio script into the calculator root.
 Name the file without a hyphen:
 biostats.py
-biostatsplus.py
+biostat2.py
 
 Eject the drive on Windows before unplugging.
 Open Python → FILES and press EXE.

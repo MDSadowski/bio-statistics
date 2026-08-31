@@ -8,7 +8,9 @@
 # - back   + forward
 # * next group
 # / menu
-# Sample SD uses n-1.
+# Menu pages:
+# P1 page 1   P2 page 2
+# + next page - prev page
 
 def mean(values):
     return sum(values) / len(values)
@@ -47,6 +49,28 @@ def r4(x):
 
 def pause():
     input("Continue: [EXE]")
+
+def page_mark(page, total):
+    tag = "[" + str(page) + "/" + str(total) + "]"
+    return " " * (21 - len(tag)) + tag
+
+def show_menu(page):
+    print("")
+    print("-BIOSTATS PLUS-")
+    print("Select mode:")
+    if page == 1:
+        print("[1] Descriptive")
+        print("[2] Group compare")
+        print("[3] Paired diff")
+        print("[4] Proportion")
+        print("+ next page")
+    else:
+        print("[5] 2x2 test")
+        print("[6] Cutoff")
+        print("[7] Help")
+        print("[8] Exit")
+        print("- prev page")
+    print(page_mark(page, 2))
 
 def collect(data, label):
     if data is None:
@@ -272,26 +296,31 @@ def help_menu():
     print("+ forward")
     print("* next group")
     print("/ return menu")
+    print("P1 page 1")
+    print("P2 page 2")
     pause()
 
+page = 1
 while True:
-    print("")
-    print("-BIOSTATS PLUS-")
-    print("Select mode:")
-    print("[1] Descriptive")
-    print("[2] Group compare")
-    print("[3] Paired diff")
-    print("[4] Proportion")
-    print("[5] 2x2 test")
-    print("[6] Cutoff")
-    print("[7] Help")
-    print("[8] Exit")
+    show_menu(page)
     try:
         choice = input("Mode: ")
     except KeyboardInterrupt:
         print("Goodbye!")
         break
-    choice = choice.strip()
+    choice = choice.strip().upper()
+    if choice == "P1":
+        page = 1
+        continue
+    if choice == "P2":
+        page = 2
+        continue
+    if choice == "+" or choice == "N":
+        page = 2
+        continue
+    if choice == "-":
+        page = 1
+        continue
     if choice == "1":
         descriptive()
     elif choice == "2":
@@ -310,4 +339,4 @@ while True:
         print("Goodbye!")
         break
     else:
-        print("1-8")
+        print("1-8 or P1/P2")
