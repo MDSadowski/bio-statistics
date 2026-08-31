@@ -1,44 +1,170 @@
 # bio-statistics
 
-Small statistical tools for biological datasets, written to run on
-**desktop Python** and a **Casio fx-CG50**.
+**Descriptive and clinical statistics for small biological datasets.**  
+Desktop Python and Casio fx-CG50 MicroPython.
 
-This repository is introductory training in statistics and bioinformatics
-for environmental-health research.
+[![License: CC0-1.0](https://img.shields.io/badge/License-CC0_1.0-lightgrey.svg)](https://creativecommons.org/publicdomain/zero/1.0/)
+[![Python](https://img.shields.io/badge/Python-3.8+-3776AB?logo=python&logoColor=white)](https://www.python.org/)
+[![Casio](https://img.shields.io/badge/Casio-fx--CG50-black)](https://github.com/MDSadowski/bio-statistics)
+[![Deps](https://img.shields.io/badge/dependencies-none-success)](requirements.txt)
+
+A compact toolkit for checking biological measurements by hand: sample summaries, two-group comparisons, paired differences, proportions, diagnostic 2×2 measures, and cutoff checks. The same menu style runs on a PC and on a graphing calculator.
+
+This project is training material for statistics and bioinformatics, written to support work in environmental health, endocrine-disrupting chemicals, and reproducible quantitative research.
+
+---
+
+## Contents
+
+- [Why this exists](#why-this-exists)
+- [Programs](#programs)
+- [Repository layout](#repository-layout)
+- [Interface](#interface)
+- [Statistics provided](#statistics-provided)
+- [Run on Windows](#run-on-windows)
+- [Run on Casio fx-CG50](#run-on-casio-fx-cg50)
+- [Controls](#controls)
+- [Methods](#methods)
+- [Limits](#limits)
+- [Example uses](#example-uses)
+- [Author](#author)
+
+---
 
 ## Why this exists
 
-Research work starts with very small, checkable calculations:
-sample size, range, mean, and spread.
+Research analysis starts with small, inspectable numbers: how many observations, where the centre sits, how wide the spread is, and whether two groups differ. These programs make those checks available without libraries, notebooks, or a lab PC.
 
-This program practises those operations in a time-saving
-form that can be used at a desk or on a calculator.
+The Casio versions keep every on-screen line to **21 characters**, so results remain readable on the fx-CG50.
 
-## Features
+---
 
-- Interactive menu
-- One-sample descriptive statistics
-- Two-sample comparison, including mean difference
-- Value-by-value entry, with back and forward editing
-- Results stay on screen until EXE / Enter
+## Programs
 
-Statistics reported:
+| File | Role | Modes |
+|---|---|---|
+| `biostats.py` | Version 1. Core summaries | One-sample stats, two-sample mean difference, help |
+| `biostats_plus.py` | Clinical extras | Descriptive, group compare, paired difference, proportion, 2×2 test, cutoff, help |
 
-- n
-- min
-- max
-- mean
-- sample standard deviation
+`biostats.py` is the finished starter tool.  
+`biostats_plus.py` is the wider clinical set. Keep both.
 
-The Casio version also prints variance in spirit through SD;
-the current script reports n, min, max, mean, and SD.
+---
 
 ## Repository layout
 
 ```text
 bio-statistics/
-├── Casio/biostats.py      # MicroPython for fx-CG50
-├── Desktop/biostats.py    # desktop Python
+├── Casio/
+│   ├── biostats.py          # MicroPython, version 1
+│   └── biostats_plus.py     # MicroPython, clinical extras
+├── Desktop/
+│   ├── biostats.py          # desktop Python, version 1
+│   └── biostats_plus.py     # desktop Python, clinical extras
 ├── README.md
 ├── requirements.txt
 └── LICENSE
+
+Interface
+Both programs use the same pattern.
+textCopy-BIOSTATS PLUS-
+Select mode:
+[1] Descriptive
+[2] Group compare
+[3] Paired diff
+[4] Proportion
+[5] 2x2 test
+[6] Cutoff
+[7] Help
+[8] Exit
+Mode:
+After a mode is chosen:
+textCopy-DESCRIPTIVE-
+Input value 1:
+After a calculation:
+textCopyn = 10
+min = 0.9
+max = 4.0
+mean = 2.23
+sd = 0.9854
+med = 2.15
+IQR = 1.3
+Continue: [EXE]
+
+Statistics provided
+Version 1 — biostats.py
+
+
+## Installation
+
+Run on Windows
+
+No packages to install.
+PowerShellCopypy Desktop\biostats.py
+py Desktop\biostats_plus.py
+If python is not recognised, use py.
+
+Run on Casio fx-CG50
+
+Connect the calculator by USB and choose USB Flash.
+Copy the Casio script into the calculator root.
+Name the file without a hyphen:
+biostats.py
+biostatsplus.py
+
+Eject the drive on Windows before unplugging.
+Open Python → FILES and press EXE.
+
+Official Casio Python cannot bind raw keys such as EXIT. The scripts therefore read the characters produced by -, +, *, /, and a blank EXE.
+
+
+## Methods
+
+Variance and standard deviation use the sample form:
+
+$$s = \sqrt{\frac{1}{n-1}\sum_{i=1}^{n}(x_i-\bar{x})^2}$$
+
+Two-sample t uses the equal-variance pooled standard deviation.
+Cohen's d is the mean difference divided by that pooled SD.
+Paired t is calculated on the entered differences.
+Proportion intervals are Wald intervals:
+
+$$\hat{p} \pm 1.96\sqrt{\frac{\hat{p}(1-\hat{p})}{n}}$$
+truncated to the range 0–1.
+
+IQR uses quartile hinges from the sorted list.
+2×2 measures use the usual diagnostic definitions from true/false positives and negatives.
+
+No third-party libraries are used. The Casio builds target stock fx-CG50 MicroPython.
+
+## Limits
+
+A summary is refused when fewer than two values are entered, except cutoff check.
+These programs do not compute p-values.
+Wald intervals are a teaching approximation and are weak for small n or extreme proportions.
+Two-sample t assumes equal variances.
+If a 2×2 denominator is 0, that measure is reported as 0.
+This is a field-check and training tool, not a substitute for a full analysis in R, Python scientific stacks, or validated clinical software.
+
+
+## Example uses
+
+Summarise a short list of metabolite or hormone values
+Compare two small exposure or control groups
+Enter before/after differences
+Check a positivity rate and a rough confidence interval
+Convert a 2×2 table into sensitivity, specificity, PPV and NPV
+Count how many measurements exceed a reference cutoff
+
+For file-based analysis with public datasets, plots, and a written methods note, use a separate repository. This repo is the calculator-and-desktop toolkit.
+
+##Author
+
+Michael D. Sadowski
+Independent researcher. Statistics, bioinformatics, and environmental-health data.
+
+GitHub: MDSadowski
+ORCID: 0009-0008-2316-3300
+Site: sadowski.ju.mp
+
+License: CC0 1.0
