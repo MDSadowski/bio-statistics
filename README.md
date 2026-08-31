@@ -66,37 +66,6 @@ bio-statistics/
 └── LICENSE
 
 
-## Interface
-
-Both programs use the same pattern.
-textCopy-BIOSTATS PLUS-
-Select mode:
-[1] Descriptive
-[2] Group compare
-[3] Paired diff
-[4] Proportion
-[5] 2x2 test
-[6] Cutoff
-[7] Help
-[8] Exit
-Mode:
-After a mode is chosen:
-textCopy-DESCRIPTIVE-
-Input value 1:
-After a calculation:
-textCopyn = 10
-min = 0.9
-max = 4.0
-mean = 2.23
-sd = 0.9854
-med = 2.15
-IQR = 1.3
-Continue: [EXE]
-
-Statistics provided
-Version 1 — biostats.py
-
-
 ## Installation
 
 Run on Windows
@@ -118,26 +87,6 @@ Eject the drive on Windows before unplugging.
 Open Python → FILES and press EXE.
 
 Official Casio Python cannot bind raw keys such as EXIT. The scripts therefore read the characters produced by -, +, *, /, and a blank EXE.
-
-
-## Methods
-
-Variance and standard deviation use the sample form:
-
-$$s = \sqrt{\frac{1}{n-1}\sum_{i=1}^{n}(x_i-\bar{x})^2}$$
-
-Two-sample t uses the equal-variance pooled standard deviation.
-Cohen's d is the mean difference divided by that pooled SD.
-Paired t is calculated on the entered differences.
-Proportion intervals are Wald intervals:
-
-$$\hat{p} \pm 1.96\sqrt{\frac{\hat{p}(1-\hat{p})}{n}}$$
-truncated to the range 0–1.
-
-IQR uses quartile hinges from the sorted list.
-2×2 measures use the usual diagnostic definitions from true/false positives and negatives.
-
-No third-party libraries are used. The Casio builds target stock fx-CG50 MicroPython.
 
 
 ## Limits
